@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NECRO BUG APK</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Bootstrap -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: black url('/assets/bg.jpg') center center/cover no-repeat;
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      z-index: 0;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      padding: 30px 24px;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      z-index: 2;
+      box-shadow: 0 0 25px rgba(255, 113, 113, 0.3);
+      animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .icon {
+      font-size: 34px;
+      color: #ff4d4d;
+      margin-bottom: 10px;
+    }
+
+    .title {
+      font-size: 32px;
+      font-family: 'Playfair Display', serif;
+      color: #cc0000;
+      text-shadow: 0 0 8px #ff4d4d;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      color: #ffb3b3;
+      margin-bottom: 25px;
+    }
+
+    .form-group {
+      position: relative;
+      margin-bottom: 18px;
+    }
+
+    .form-group i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #ff8a8a;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px 14px 14px 38px;
+      border-radius: 10px;
+      border: none;
+      background: #330000;
+      color: #e5ccff;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      font-size: 15px;
+      background: linear-gradient(135deg, #cc0000, #440000);
+      color: white;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      text-shadow: 0 0 8px #ff4d4d;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(163, 113, 255, 0.4);
+    }
+
+    .buy-access {
+      margin-top: 16px;
+      display: inline-block;
+      font-size: 13px;
+      background: #ff8a8a;
+      padding: 10px 18px;
+      color: black;
+      border-radius: 8px;
+      font-weight: 500;
+      text-decoration: none;
+      box-shadow: 0 0 12px rgba(255, 0, 0, 0.15);
+    }
+
+    .buy-access:hover {
+      background: #ff6d6d;
+    }
+
+    .footer {
+      margin-top: 28px;
+      font-size: 10px;
+      color: #ffa3a3;
+    }
+
+    .toast {
+      position: absolute;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #cc0000;
+      color: white;
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: 0 0 12px rgba(255, 0, 0, 0.4);
+      opacity: 0;
+      animation: fadeInOut 3.8s ease forwards;
+      z-index: 10;
+    }
+
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translate(-50%, 20px); }
+      10% { opacity: 1; transform: translate(-50%, 0); }
+      90% { opacity: 1; }
+      100% { opacity: 0; transform: translate(-50%, 20px); }
+    }
+    .icon img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+  </style>
+</head>
+
+<body>
+  <div id="particles"></div>
+
+  <div class="card">
+    <div class="icon"><img src="https://files.catbox.moe/db1ynz.jpg" alt="Cursed" /></div>
+    <div class="title">NECRO LIGHT</div>
+    <div class="subtitle">Welcome to Necro System.</div>
+
+    <form method="POST" action="/auth">
+      <div class="form-group">
+        <i class="fas fa-user"></i>
+        <input type="text" name="username" placeholder="Username " required />
+      </div>
+      <div class="form-group">
+        <i class="fas fa-key"></i>
+        <input type="text" name="key" placeholder="Key Login" required />
+      </div>
+     <input type="hidden" name="deviceId" id="deviceIdField" />
+      <button type="submit">
+        <i class="fas fa-lock" style="margin-right: 8px;"></i>
+        G A T E W A Y &nbsp; A C C E S S
+      </button>
+    </form>
+
+    <a class="buy-access" href="https://t.me/DEAFORT_REAL2" target="_blank">
+      <i class="fas fa-coins"></i> Buy Access Key
+    </a>
+
+    <div class="footer">NECRO-CORPS</div>
+  </div>
+
+  <div id="toast" class="toast" style="display:none;"></div>
+
+  <!-- Particleground Library -->
+  <script src="https://cdn.jsdelivr.net/gh/jnicol/particleground/jquery.particleground.min.js"></script>
+ <script> /*!
+ * Particleground
+ *
+ */
+ document.addEventListener('DOMContentLoaded', function () {
+  particleground(document.getElementById('particles'), {
+    dotColor: '#ffffffff',
+    lineColor: '#e11010ff'
+  });
+  var intro = document.getElementById('intro');
+  intro.style.marginTop = - intro.offsetHeight / 2 + 'px';
+}, false);
+
+
+
+;(function(window, document) {
+  "use strict";
+  var pluginName = 'particleground';
+
+  function extend(out) {
+    out = out || {};
+    for (var i = 1; i < arguments.length; i++) {
+      var obj = arguments[i];
+      if (!obj) continue;
+      for (var key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          if (typeof obj[key] === 'object')
+            deepExtend(out[key], obj[key]);
+          else
+            out[key] = obj[key];
+        }
+      }
+    }
+    return out;
+  };
+
+  var $ = window.jQuery;
+
+  function Plugin(element, options) {
+    var canvasSupport = !!document.createElement('canvas').getContext;
+    var canvas;
+    var ctx;
+    var particles = [];
+    var raf;
+    var mouseX = 0;
+    var mouseY = 0;
+    var winW;
+    var winH;
+    var desktop = !navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|BB10|mobi|tablet|opera mini|nexus 7)/i);
+    var orientationSupport = !!window.DeviceOrientationEvent;
+    var tiltX = 0;
+    var pointerX;
+    var pointerY;
+    var tiltY = 0;
+    var paused = false;
+
+    options = extend({}, window[pluginName].defaults, options);
+
+    /**
+     * Init
+     */
+    function init() {
+      if (!canvasSupport) { return; }
+
+      //Create canvas
+      canvas = document.createElement('canvas');
+      canvas.className = 'pg-canvas';
+      canvas.style.display = 'block';
+      element.insertBefore(canvas, element.firstChild);
+      ctx = canvas.getContext('2d');
+      styleCanvas();
+
+      // Create particles
+      var numParticles = Math.round((canvas.width * canvas.height) / options.density);
+      for (var i = 0; i < numParticles; i++) {
+        var p = new Particle();
+        p.setStackPos(i);
+        particles.push(p);
+      };
+
+      window.addEventListener('resize', function() {
+        resizeHandler();
+      }, false);
+
+      document.addEventListener('mousemove', function(e) {
+        mouseX = e.pageX;
+        mouseY = e.pageY;
+      }, false);
+
+      if (orientationSupport && !desktop) {
+        window.addEventListener('deviceorientation', function () {
+          // Contrain tilt range to [-30,30]
+          tiltY = Math.min(Math.max(-event.beta, -30), 30);
+          tiltX = Math.min(Math.max(-event.gamma, -30), 30);
+        }, true);
+      }
+
+      draw();
+      hook('onInit');
+    }
+
+    /**
+     * Style the canvas
+     */
+    function styleCanvas() {
+      canvas.width = element.offsetWidth;
+      canvas.height = element.offsetHeight;
+      ctx.fillStyle = options.dotColor;
+      ctx.strokeStyle = options.lineColor;
+      ctx.lineWidth = options.lineWidth;
+    }
+
+    /**
+     * Draw particles
+     */
+    function draw() {
+      if (!canvasSupport) { return; }
+
+      winW = window.innerWidth;
+      winH = window.innerHeight;
+
+      // Wipe canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Update particle positions
+      for (var i = 0; i < particles.length; i++) {
+        particles[i].updatePosition();
+      };
+      // Draw particles
+      for (var i = 0; i < particles.length; i++) {
+        particles[i].draw();
+      };
+
+      // Call this function next time screen is redrawn
+      if (!paused) {
+        raf = requestAnimationFrame(draw);
+      }
+    }
+
+    /**
+     * Add/remove particles.
+     */
+    function resizeHandler() {
+      // Resize the canvas
+      styleCanvas();
+
+      var elWidth = element.offsetWidth;
+      var elHeight = element.offsetHeight;
+
+      // Remove particles that are outside the canvas
+      for (var i = particles.length - 1; i >= 0; i--) {
+        if (particles[i].position.x > elWidth || particles[i].position.y > elHeight) {
+          particles.splice(i, 1);
+        }
+      };
+
+      // Adjust particle density
+      var numParticles = Math.round((canvas.width * canvas.height) / options.density);
+      if (numParticles > particles.length) {
+        while (numParticles > particles.length) {
+          var p = new Particle();
+          particles.push(p);
+        }
+      } else if (numParticles < particles.length) {
+        particles.splice(numParticles);
+      }
+
+      // Re-index particles
+      for (i = particles.length - 1; i >= 0; i--) {
+        particles[i].setStackPos(i);
+      };
+    }
+
+    /**
+     * Pause particle system
+     */
+    function pause() {
+      paused = true;
+    }
+
+    /**
+     * Start particle system
+     */
+    function start() {
+      paused = false;
+      draw();
+    }
+
+    /**
+     * Particle
+     */
+    function Particle() {
+      this.stackPos;
+      this.active = true;
+      this.layer = Math.ceil(Math.random() * 3);
+      this.parallaxOffsetX = 0;
+      this.parallaxOffsetY = 0;
+      // Initial particle position
+      this.position = {
+        x: Math.ceil(Math.random() * canvas.width),
+        y: Math.ceil(Math.random() * canvas.height)
+      }
+      // Random particle speed, within min and max values
+      this.speed = {}
+      switch (options.directionX) {
+        case 'left':
+          this.speed.x = +(-options.maxSpeedX + (Math.random() * options.maxSpeedX) - options.minSpeedX).toFixed(2);
+          break;
+        case 'right':
+          this.speed.x = +((Math.random() * options.maxSpeedX) + options.minSpeedX).toFixed(2);
+          break;
+        default:
+          this.speed.x = +((-options.maxSpeedX / 2) + (Math.random() * options.maxSpeedX)).toFixed(2);
+          this.speed.x += this.speed.x > 0 ? options.minSpeedX : -options.minSpeedX;
+          break;
+      }
+      switch (options.directionY) {
+        case 'up':
+          this.speed.y = +(-options.maxSpeedY + (Math.random() * options.maxSpeedY) - options.minSpeedY).toFixed(2);
+          break;
+        case 'down':
+          this.speed.y = +((Math.random() * options.maxSpeedY) + options.minSpeedY).toFixed(2);
+          break;
+        default:
+          this.speed.y = +((-options.maxSpeedY / 2) + (Math.random() * options.maxSpeedY)).toFixed(2);
+          this.speed.x += this.speed.y > 0 ? options.minSpeedY : -options.minSpeedY;
+          break;
+      }
+    }
+
+    /**
+     * Draw particle
+     */
+    Particle.prototype.draw = function() {
+  // === Titik Partikel ===
+  ctx.save();
+  ctx.shadowColor = '#a020f0';      // Warna glow ungu
+  ctx.shadowBlur = 8;               // Intensitas blur
+  ctx.shadowOffsetX = 0;
+  ctx.shadowOffsetY = 0;
+
+  ctx.beginPath();
+  ctx.arc(
+    this.position.x + this.parallaxOffsetX,
+    this.position.y + this.parallaxOffsetY,
+    options.particleRadius / 2,
+    0,
+    Math.PI * 2,
+    true
+  );
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+
+  // === Garis Antar Partikel ===
+  ctx.save();
+  ctx.shadowColor = '#a020f0';
+  ctx.shadowBlur = 8;
+  ctx.shadowOffsetX = 0;
+  ctx.shadowOffsetY = 0;
+
+  ctx.beginPath();
+  for (var i = particles.length - 1; i > this.stackPos; i--) {
+    var p2 = particles[i];
+
+    // Hitung jarak antar titik (Pythagoras)
+    var a = this.position.x - p2.position.x;
+    var b = this.position.y - p2.position.y;
+    var dist = Math.sqrt((a * a) + (b * b)).toFixed(2);
+
+    if (dist < options.proximity) {
+      ctx.moveTo(
+        this.position.x + this.parallaxOffsetX,
+        this.position.y + this.parallaxOffsetY
+      );
+
+      if (options.curvedLines) {
+        ctx.quadraticCurveTo(
+          Math.max(p2.position.x, p2.position.x),
+          Math.min(p2.position.y, p2.position.y),
+          p2.position.x + p2.parallaxOffsetX,
+          p2.position.y + p2.parallaxOffsetY
+        );
+      } else {
+        ctx.lineTo(
+          p2.position.x + p2.parallaxOffsetX,
+          p2.position.y + p2.parallaxOffsetY
+        );
+      }
+    }
+  }
+  ctx.stroke();
+  ctx.closePath();
+  ctx.restore();
+};
+
+
+    /**
+     * update particle position
+     */
+    Particle.prototype.updatePosition = function() {
+      if (options.parallax) {
+        if (orientationSupport && !desktop) {
+          // Map tiltX range [-30,30] to range [0,winW]
+          var ratioX = (winW - 0) / (30 - -30);
+          pointerX = (tiltX - -30) * ratioX + 0;
+          // Map tiltY range [-30,30] to range [0,winH]
+          var ratioY = (winH - 0) / (30 - -30);
+          pointerY = (tiltY - -30) * ratioY + 0;
+        } else {
+          pointerX = mouseX;
+          pointerY = mouseY;
+        }
+        // Calculate parallax offsets
+        this.parallaxTargX = (pointerX - (winW / 2)) / (options.parallaxMultiplier * this.layer);
+        this.parallaxOffsetX += (this.parallaxTargX - this.parallaxOffsetX) / 10; // Easing equation
+        this.parallaxTargY = (pointerY - (winH / 2)) / (options.parallaxMultiplier * this.layer);
+        this.parallaxOffsetY += (this.parallaxTargY - this.parallaxOffsetY) / 10; // Easing equation
+      }
+
+      var elWidth = element.offsetWidth;
+      var elHeight = element.offsetHeight;
+
+      switch (options.directionX) {
+        case 'left':
+          if (this.position.x + this.speed.x + this.parallaxOffsetX < 0) {
+            this.position.x = elWidth - this.parallaxOffsetX;
+          }
+          break;
+        case 'right':
+          if (this.position.x + this.speed.x + this.parallaxOffsetX > elWidth) {
+            this.position.x = 0 - this.parallaxOffsetX;
+          }
+          break;
+        default:
+          // If particle has reached edge of canvas, reverse its direction
+          if (this.position.x + this.speed.x + this.parallaxOffsetX > elWidth || this.position.x + this.speed.x + this.parallaxOffsetX < 0) {
+            this.speed.x = -this.speed.x;
+          }
+          break;
+      }
+
+      switch (options.directionY) {
+        case 'up':
+          if (this.position.y + this.speed.y + this.parallaxOffsetY < 0) {
+            this.position.y = elHeight - this.parallaxOffsetY;
+          }
+          break;
+        case 'down':
+          if (this.position.y + this.speed.y + this.parallaxOffsetY > elHeight) {
+            this.position.y = 0 - this.parallaxOffsetY;
+          }
+          break;
+        default:
+          // If particle has reached edge of canvas, reverse its direction
+          if (this.position.y + this.speed.y + this.parallaxOffsetY > elHeight || this.position.y + this.speed.y + this.parallaxOffsetY < 0) {
+            this.speed.y = -this.speed.y;
+          }
+          break;
+      }
+
+      // Move particle
+      this.position.x += this.speed.x;
+      this.position.y += this.speed.y;
+    }
+
+    /**
+     * Setter: particle stacking position
+     */
+    Particle.prototype.setStackPos = function(i) {
+      this.stackPos = i;
+    }
+
+    function option (key, val) {
+      if (val) {
+        options[key] = val;
+      } else {
+        return options[key];
+      }
+    }
+
+    function destroy() {
+      console.log('destroy');
+      canvas.parentNode.removeChild(canvas);
+      hook('onDestroy');
+      if ($) {
+        $(element).removeData('plugin_' + pluginName);
+      }
+    }
+
+    function hook(hookName) {
+      if (options[hookName] !== undefined) {
+        options[hookName].call(element);
+      }
+    }
+
+    init();
+
+    return {
+      option: option,
+      destroy: destroy,
+      start: start,
+      pause: pause
+    };
+  }
+
+  window[pluginName] = function(elem, options) {
+    return new Plugin(elem, options);
+  };
+
+  window[pluginName].defaults = {
+    minSpeedX: 0.1,
+    maxSpeedX: 0.7,
+    minSpeedY: 0.1,
+    maxSpeedY: 0.7,
+    directionX: 'center', // 'center', 'left' or 'right'. 'center' = dots bounce off edges
+    directionY: 'center', // 'center', 'up' or 'down'. 'center' = dots bounce off edges
+    density: 10000, // How many particles will be generated: one particle every n pixels
+    dotColor: '#666666',
+    lineColor: '#666666',
+    particleRadius: 7, // Dot size
+    lineWidth: 1,
+    curvedLines: false,
+    proximity: 100, // How close two dots need to be before they join
+    parallax: true,
+    parallaxMultiplier: 5, // The lower the number, the more extreme the parallax effect
+    onInit: function() {},
+    onDestroy: function() {}
+  };
+
+  // nothing wrong with hooking into jQuery if it's there...
+  if ($) {
+    $.fn[pluginName] = function(options) {
+      if (typeof arguments[0] === 'string') {
+        var methodName = arguments[0];
+        var args = Array.prototype.slice.call(arguments, 1);
+        var returnVal;
+        this.each(function() {
+          if ($.data(this, 'plugin_' + pluginName) && typeof $.data(this, 'plugin_' + pluginName)[methodName] === 'function') {
+            returnVal = $.data(this, 'plugin_' + pluginName)[methodName].apply(this, args);
+          }
+        });
+        if (returnVal !== undefined){
+          return returnVal;
+        } else {
+          return this;
+        }
+      } else if (typeof options === "object" || !options) {
+        return this.each(function() {
+          if (!$.data(this, 'plugin_' + pluginName)) {
+            $.data(this, 'plugin_' + pluginName, new Plugin(this, options));
+          }
+        });
+      }
+    };
+  }
+
+})(window, document);
+
+(function() {
+    var lastTime = 0;
+    var vendors = ['ms', 'moz', 'webkit', 'o'];
+    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+      window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+      window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame']
+                                 || window[vendors[x]+'CancelRequestAnimationFrame'];
+    }
+
+    if (!window.requestAnimationFrame)
+      window.requestAnimationFrame = function(callback, element) {
+        var currTime = new Date().getTime();
+        var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+        var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+          timeToCall);
+        lastTime = currTime + timeToCall;
+        return id;
+      };
+
+    if (!window.cancelAnimationFrame)
+      window.cancelAnimationFrame = function(id) {
+        clearTimeout(id);
+      };
+}());
+</script>
+<script>
+  function generateDeviceIdFromUsername(username) {
+    // Contoh sederhana: hash-like ID dari username + fingerprint
+    const salt = "CURSED-SALT-1"; // bisa diganti apa saja
+    const raw = username + salt + navigator.userAgent;
+    let hash = 0;
+    for (let i = 0; i < raw.length; i++) {
+      hash = (hash << 5) - hash + raw.charCodeAt(i);
+      hash |= 0;
+    }
+    return "dev-" + Math.abs(hash).toString(16);
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.querySelector("form");
+    form.addEventListener("submit", (e) => {
+      const usernameInput = form.querySelector("input[name='username']");
+      const deviceIdField = form.querySelector("input[name='deviceId']");
+
+      if (!usernameInput.value) {
+        alert("Username harus diisi!");
+        e.preventDefault();
+        return;
+      }
+
+      const deviceId = generateDeviceIdFromUsername(usernameInput.value);
+      deviceIdField.value = deviceId;
+
+      console.log("🔐 Generated device ID:", deviceId);
+    });
+  });
+</script>
+
+</body>
+</html>
