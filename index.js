@@ -325,7 +325,7 @@ function owner(userId) {
 // ----- ( Comand Sender & Del Sende Handlerr ) ----- \\
 bot.command("connect", async (ctx) => {
   const userId = ctx.from.id.toString();
-  if (!isOwner(userId)) return ctx.reply("Hanya owner yang bisa menambahkan sender.");
+   if (!isAuthorized(ctx.from.id)) return ctx.reply("Hanya owner yang bisa menambahkan sender.");
   const args = ctx.message.text.split(" ");
   if (args.length < 2) {
     return await ctx.reply("Masukkan nomor WA: `/connect 62xxxx`", { parse_mode: "Markdown" });
@@ -549,7 +549,7 @@ bot.command("delkey", (ctx) => {
 });
 
 bot.command("addakses", (ctx) => {
-  if (!isOwner(ctx.from.id)) return ctx.reply("❌ Hanya owner yang bisa tambah akses!");
+   if (!isAuthorized(ctx.from.id)) return ctx.reply("❌ Hanya owner yang bisa tambah akses!");
   const id = parseInt(ctx.message.text.split(" ")[1]);
   if (!id) return ctx.reply("⚠️ Format: /addakses <user_id>");
 
@@ -561,7 +561,7 @@ bot.command("addakses", (ctx) => {
 });
 
 bot.command("delakses", (ctx) => {
-  if (!isOwner(ctx.from.id)) return ctx.reply("❌ Hanya owner yang bisa hapus akses!");
+  if (!isAuthorized(ctx.from.id)) return ctx.reply("❌ Hanya owner yang bisa hapus akses!");
   const id = parseInt(ctx.message.text.split(" ")[1]);
   if (!id) return ctx.reply("⚠️ Format: /delakses <user_id>");
 
@@ -573,7 +573,7 @@ bot.command("delakses", (ctx) => {
 });
 
 bot.command("addowner", (ctx) => {
-  if (!isOwner(ctx.from.id)) return ctx.reply("❌ Hanya owner yang bisa tambah owner!");
+  if  if (!isAuthorized(ctx.from.id)) return ctx.reply("❌ Hanya owner yang bisa tambah owner!");
   const id = parseInt(ctx.message.text.split(" ")[1]);
   if (!id) return ctx.reply("⚠️ Format: /addowner <user_id>");
 
@@ -585,7 +585,7 @@ bot.command("addowner", (ctx) => {
 });
 
 bot.command("delowner", (ctx) => {
-  if (!isOwner(ctx.from.id)) return ctx.reply("❌ Hanya owner yang bisa hapus owner!");
+  if if (!isAuthorized(ctx.from.id)) return ctx.reply("❌ Hanya owner yang bisa hapus owner!");
   const id = parseInt(ctx.message.text.split(" ")[1]);
   if (!id) return ctx.reply("⚠️ Format: /delowner <user_id>");
 
