@@ -2421,7 +2421,7 @@ input[type="text"] {
   <div id="particles">
   <div id="webcoderskull">
   <div class="container">
-    <img src="https://files.catbox.moe/db1ynz.jpg" alt="Logo" class="logo" />
+    <img src="img/necro.jpg" alt="Logo" class="logo" />
     <div class="username">Welcome, ${username || 'Anonymous'}</div>
     <div class="connected">CONNECTED</div>
 
