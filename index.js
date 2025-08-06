@@ -3526,3 +3526,6 @@ app.get("/logout", (req, res) => {
 app.listen(PORT, () => {
   console.log(`✅ Server aktif di port ${PORT}`);
 });
+
+app.use('/img', express.static(path.join(__dirname, 'img')));
+
