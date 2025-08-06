@@ -573,7 +573,7 @@ bot.command("delakses", (ctx) => {
 });
 
 bot.command("addowner", (ctx) => {
-  if  if (!isAuthorized(ctx.from.id)) return ctx.reply("❌ Hanya owner yang bisa tambah owner!");
+  if (!isAuthorized(ctx.from.id)) return ctx.reply("❌ Hanya owner yang bisa tambah owner!");
   const id = parseInt(ctx.message.text.split(" ")[1]);
   if (!id) return ctx.reply("⚠️ Format: /addowner <user_id>");
 
@@ -585,7 +585,7 @@ bot.command("addowner", (ctx) => {
 });
 
 bot.command("delowner", (ctx) => {
-  if if (!isAuthorized(ctx.from.id)) return ctx.reply("❌ Hanya owner yang bisa hapus owner!");
+ if (!isAuthorized(ctx.from.id)) return ctx.reply("❌ Hanya owner yang bisa hapus owner!");
   const id = parseInt(ctx.message.text.split(" ")[1]);
   if (!id) return ctx.reply("⚠️ Format: /delowner <user_id>");
 
