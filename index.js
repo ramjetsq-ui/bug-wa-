@@ -3106,18 +3106,14 @@ app.get("/dashboard_admin", (req, res) => {
       <td>
         <select class="bg-transparent text-red-300 border-none focus:ring-0 p-1 role-selector" data-field="role">
           <option value="user" ${user.role === "user" ? "selected" : ""}>User</option>
-          <option value="admin" ${user.role === "admin" ? "selected" : ""}>Admin</option>
+          <option value="vip" ${user.role === "vip" ? "selected" : ""}>Vip</option>
         </select>
       </td>
       <td class="py-2 px-4" contenteditable="true" data-field="deviceId">${user.deviceId || "-"}</td>
       <td class="py-2 px-4" contenteditable="true" data-field="expired">${user.expired}</td>
       <td class="py-2 px-4 flex gap-2">
-        <button class="text-blue-400 hover:text-blue-600 save-btn" title="Simpan Perubahan">
-          Simpan
-        </button>
-        <button class="text-red-400 hover:text-red-600 delete-btn" title="Hapus User">
-          Hapus
-        </button>
+        <button class="text-blue-400 hover:text-blue-600 save-btn">Simpan</button>
+        <button class="text-red-400 hover:text-red-600 delete-btn">Hapus</button>
       </td>
     </tr>
   `).join("");
@@ -3128,114 +3124,108 @@ app.get("/dashboard_admin", (req, res) => {
   <head>
     <meta charset="UTF-8" />
     <title>Dashboard - NecroPanel</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
     <style>
       body { font-family: 'Poppins', sans-serif; }
       td[contenteditable="true"]:focus { outline: 2px solid #f43f5e; }
-      #particles-js {
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-        top: 0;
-        left: 0;
-      }
+      .sidebar-hidden { transform: translateX(-100%); }
     </style>
   </head>
   <body class="bg-black text-red-400 min-h-screen flex">
-    <div id="particles-js"></div>
 
     <!-- Sidebar -->
- <aside class="bg-white/10 backdrop-blur-md border border-white/20 w-64 min-h-screen p-4 space-y-4 fixed">
-  <h2 class="text-xl font-bold border-b border-red-400 pb-2 mb-2">NecroPanel</h2>
-  <nav class="flex flex-col space-y-2">
-    <a href="#overview" class="hover:bg-red-700/60 p-2 rounded flex items-center gap-2">Overview</a>
-    <a href="#users" class="hover:bg-red-700/60 p-2 rounded flex items-center gap-2">Users</a>
-    <a href="#add-user" class="hover:bg-red-700/60 p-2 rounded flex items-center gap-2">Add User</a>
-  </nav>
-</aside>
-
+    <aside id="sidebar" class="bg-white/10 backdrop-blur-md border border-white/20 w-64 min-h-screen p-4 space-y-4 fixed transform transition-transform duration-300">
+      <h2 class="text-xl font-bold border-b border-red-400 pb-2 mb-2">NecroPanel</h2>
+      <nav class="flex flex-col space-y-2">
+        <a href="#overview" class="hover:bg-red-700/60 p-2 rounded">Overview</a>
+        <a href="#users" class="hover:bg-red-700/60 p-2 rounded">Users</a>
+        <a href="#add-user" class="hover:bg-red-700/60 p-2 rounded">Add User</a>
+      </nav>
+    </aside>
 
     <!-- Main Content -->
     <main class="ml-64 p-6 w-full space-y-8">
-      <!-- Logout -->
-      <div class="flex justify-end">
+      <!-- Top Bar -->
+      <div class="flex justify-between items-center">
+        <button id="toggleSidebar" class="text-2xl">&#9776;</button>
         <a href="/logout" class="text-red-400 hover:text-red-600 text-sm border border-red-500 rounded px-3 py-1">Logout</a>
       </div>
 
       <!-- Overview -->
-      <section id="overview">
+      <section id="overview" class="bg-red-800 rounded p-4 shadow">
         <h2 class="text-2xl font-bold mb-4">Overview</h2>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-          <div class="bg-red-800 rounded p-4"><p class="text-sm">Username</p><p class="font-bold text-lg">${currentUser.username}</p></div>
-          <div class="bg-red-800 rounded p-4"><p class="text-sm">Role</p><p class="font-bold text-lg">${currentUser.role}</p></div>
-          <div class="bg-red-800 rounded p-4"><p class="text-sm">Device ID</p><p class="font-bold text-lg">${currentUser.deviceId || "-"}</p></div>
-          <div class="bg-red-800 rounded p-4"><p class="text-sm">Expired</p><p class="font-bold text-lg">${new Date(currentUser.expired).toLocaleString("id-ID")}</p></div>
+          <div class="bg-black/40 rounded p-4"><p class="text-sm">Username</p><p class="font-bold text-lg">${currentUser.username}</p></div>
+          <div class="bg-black/40 rounded p-4"><p class="text-sm">Role</p><p class="font-bold text-lg">${currentUser.role}</p></div>
+          <div class="bg-black/40 rounded p-4"><p class="text-sm">Device ID</p><p class="font-bold text-lg">${currentUser.deviceId || "-"}</p></div>
+          <div class="bg-black/40 rounded p-4"><p class="text-sm">Expired</p><p class="font-bold text-lg">${new Date(currentUser.expired).toLocaleString("id-ID")}</p></div>
         </div>
       </section>
 
       <!-- Users -->
-     <section id="users">
-  <div class="flex justify-between items-center mb-4">
-    <h2 class="text-2xl font-bold">Users</h2>
-    <input type="search" id="searchInput" placeholder="Cari username..." class="bg-black text-white border border-red-500 rounded px-3 py-1 focus:outline-none">
-  </div>
-  <div class="overflow-auto rounded border border-red-600 mb-4">
-    <table class="min-w-full text-left" id="userTable">
-      <thead class="bg-red-800 text-red-200">
-        <tr>
-          <th class="py-2 px-4">Username</th>
-          <th class="py-2 px-4">Key</th>
-          <th class="py-2 px-4">Role</th>
-          <th class="py-2 px-4">Device ID</th>
-          <th class="py-2 px-4">Expired</th>
-          <th class="py-2 px-4">Action</th>
-        </tr>
-      </thead>
-      <tbody id="userTableBody">
-        ${userRows}
-      </tbody>
-    </table>
-  </div>
-  <div class="flex justify-end gap-2">
-    <button id="prevPage" class="px-3 py-1 bg-red-700 text-white rounded hover:bg-red-600">Prev</button>
-    <button id="nextPage" class="px-3 py-1 bg-red-700 text-white rounded hover:bg-red-600">Next</button>
-  </div>
-</section>
+      <section id="users" class="bg-red-800 rounded p-4 shadow">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-2xl font-bold">Users</h2>
+          <input type="search" id="searchInput" placeholder="Cari username..." class="bg-black text-white border border-red-500 rounded px-3 py-1">
+        </div>
+        <div class="overflow-auto rounded border border-red-600 mb-4">
+          <table class="min-w-full text-left" id="userTable">
+            <thead class="bg-red-800 text-red-200">
+              <tr>
+                <th class="py-2 px-4">Username</th>
+                <th class="py-2 px-4">Key</th>
+                <th class="py-2 px-4">Role</th>
+                <th class="py-2 px-4">Device ID</th>
+                <th class="py-2 px-4">Expired</th>
+                <th class="py-2 px-4">Action</th>
+              </tr>
+            </thead>
+            <tbody id="userTableBody">
+              ${userRows}
+            </tbody>
+          </table>
+        </div>
+        <div class="flex justify-end gap-2">
+          <button id="prevPage" class="px-3 py-1 bg-red-700 text-white rounded hover:bg-red-600">Prev</button>
+          <button id="nextPage" class="px-3 py-1 bg-red-700 text-white rounded hover:bg-red-600">Next</button>
+        </div>
+      </section>
 
       <!-- Add User -->
-     <form action="/add-user" method="POST" onsubmit="sessionStorage.setItem('userAdded', 'true')" class="space-y-4 bg-red-800 p-4 rounded w-full max-w-xl">
-  <h3 class="text-xl font-semibold mb-2">Tambah User Baru</h3>
-
-  <div>
-    <label class="block text-sm">Username</label>
-    <input name="username" class="w-full p-2 rounded bg-black text-white border border-red-500" required>
-  </div>
-
-  <input type="hidden" name="key" value="${crypto.randomBytes(2).toString('hex').toUpperCase()}">
-
-  <div>
-    <label class="block text-sm">Role</label>
-    <select name="role" class="w-full p-2 rounded bg-black text-white border border-red-500">
-      <option value="user">User</option>
-      <option value="vip">Vip</option>
-    </select>
-  </div>
-
-  <div>
-    <label class="block text-sm">Expired (timestamp)</label>
-    <input name="expired" type="number" class="w-full p-2 rounded bg-black text-white border border-red-500" required>
-  </div>
-
-  <!-- Kirim halaman asal -->
-  <input type="hidden" name="redirect" value="dashboard_admin">
-
-  <button class="bg-red-600 px-4 py-2 rounded hover:bg-red-700 text-white" type="submit">Tambah</button>
-</form>
-
+      <section id="add-user" class="bg-red-800 rounded p-4 shadow">
+        <form action="/add-user" method="POST" onsubmit="sessionStorage.setItem('userAdded', 'true')" class="space-y-4">
+          <h3 class="text-xl font-semibold mb-2">Tambah User Baru</h3>
+          <div>
+            <label class="block text-sm">Username</label>
+            <input name="username" class="w-full p-2 rounded bg-black text-white border border-red-500" required>
+          </div>
+          <input type="hidden" name="key" value="${crypto.randomBytes(2).toString('hex').toUpperCase()}">
+          <div>
+            <label class="block text-sm">Role</label>
+            <select name="role" class="w-full p-2 rounded bg-black text-white border border-red-500">
+              <option value="user">User</option>
+              <option value="vip">Vip</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm">Expired (timestamp)</label>
+            <input name="expired" type="number" class="w-full p-2 rounded bg-black text-white border border-red-500" required>
+          </div>
+          <input type="hidden" name="redirect" value="dashboard_admin">
+          <button class="bg-red-600 px-4 py-2 rounded hover:bg-red-700 text-white" type="submit">Tambah</button>
+        </form>
+      </section>
     </main>
+
+    <script>
+      // Sidebar toggle
+      const sidebar = document.getElementById('sidebar');
+      const toggleBtn = document.getElementById('toggleSidebar');
+      toggleBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('sidebar-hidden');
+      });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
    <script>
   const rowsPerPage = 10;
@@ -3397,33 +3387,6 @@ showPage(1);
   }
 
 </script>
-
-    <script>
-      particlesJS("particles-js", {
-        particles: {
-          number: { value: 50, density: { enable: true, value_area: 800 } },
-          color: { value: "#ff1a1a" },
-          shape: { type: "circle" },
-          opacity: { value: 0.5 },
-          size: { value: 3 },
-          line_linked: { enable: true, distance: 150, color: "#ff1a1a", opacity: 0.4, width: 1 },
-          move: { enable: true, speed: 3 }
-        },
-        interactivity: {
-          detect_on: "canvas",
-          events: {
-            onhover: { enable: true, mode: "repulse" },
-            onclick: { enable: true, mode: "push" },
-            resize: true
-          },
-          modes: {
-            repulse: { distance: 100 },
-            push: { particles_nb: 4 }
-          }
-        },
-        retina_detect: true
-      });     
-    </script>
   </body>
   </html>
   `);
