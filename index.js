@@ -373,13 +373,19 @@ bot.command("buatkey", (ctx) => {
 
   const args = ctx.message.text.split(" ")[1];
   if (!args || !args.includes(",")) {
-    return ctx.reply("❗ Format salah.\nContoh: /buatkey renx,30d[,admin]");
+    return ctx.reply("❗ Format salah.\nContoh: /buatkey renx,30d[,vip/admin/owner]");
   }
 
   const [usernameRaw, durasiStrRaw, roleRaw] = args.split(",");
   const username = usernameRaw.trim();
   const durasiStr = durasiStrRaw.trim();
   const role = (roleRaw || "user").trim().toLowerCase();
+
+  // Role yang diizinkan
+  const allowedRoles = ["user", "vip", "admin", "owner"];
+  if (!allowedRoles.includes(role)) {
+    return ctx.reply(`❌ Role tidak valid!\nGunakan salah satu dari: ${allowedRoles.join(", ")}`);
+  }
 
   const durationMs = parseDuration(durasiStr);
   if (!durationMs) {
@@ -413,38 +419,17 @@ bot.command("buatkey", (ctx) => {
   const apiBaseUrl = `http://${VPS}:${PORT}/execution`;
 
   const functionCode = `
-🧬 API WEB : \`http://${VPS}:${PORT}/\`
-💻 *Contoh Pemakaian Script Client:*
-
-\`\`\`js
-const axios = require("axios");
-
-async function sendFreezeAndros(targetNumber) {
-  try {
-    const res = await axios.get(\`${apiBaseUrl}?target=\${targetNumber}&mode=andros&username=${username}&key=${key}\`);
-    console.log("✅ ANDROS:", res.data);
-  } catch (err) {
-    console.error("❌ Gagal Andros:", err.response?.data || err.message);
-  }
-}
-
-async function sendFreezeIOS(targetNumber) {
-  try {
-    const res = await axios.get(\`${apiBaseUrl}?target=\${targetNumber}&mode=ios&username=${username}&key=${key}\`);
-    console.log("✅ IOS:", res.data);
-  } catch (err) {
-    console.error("❌ Gagal IOS:", err.response?.data || err.message);
-  }
-}
-
-// Contoh:
-// await sendFreezeAndros("628xxxx");
-// await sendFreezeIOS("628xxxx");
-\`\`\`
-`;
-
-  ctx.replyWithMarkdown(`✅ *Key berhasil dibuat:*\n\n*Username:* \`${username}\`\n*Key:* \`${key}\`\n*Role:* \`${role}\`\n*Expired:* _${expiredStr}_ WIB\n\n${functionCode}`);
+🧬 API WEB : \`http://${VPS}:${PORT}/\`;
+  ctx.replyWithMarkdown(
+    `✅ *Key berhasil dibuat:*\n\n` +
+    `*Username:* \`${username}\`\n` +
+    `*Key:* \`${key}\`\n` +
+    `*Role:* \`${role}\`\n` +
+    `*Expired:* _${expiredStr}_ WIB\n\n` +
+    functionCode
+  );
 });
+
 
 function getUsers() {
   const filePath = path.join(__dirname, 'database', 'user.json');
@@ -453,7 +438,8 @@ function getUsers() {
     const parsed = JSON.parse(rawData);
     return parsed.map(u => ({
       ...u,
-      expired: Number(u.expired) 
+      expired: Number(u.expired),
+      role: (u.role || "user").toLowerCase() // default user kalau belum ada
     }));
   } catch (err) {
     console.error("❌ Gagal membaca user.json:", err);
@@ -466,7 +452,8 @@ function saveUsers(users) {
 
   const normalizedUsers = users.map(u => ({
     ...u,
-    expired: Number(u.expired)
+    expired: Number(u.expired),
+    role: (u.role || "user").toLowerCase()
   }));
 
   try {
@@ -474,31 +461,6 @@ function saveUsers(users) {
     console.log("✅ Data user berhasil disimpan.");
   } catch (err) {
     console.error("❌ Gagal menyimpan user:", err);
-  }
-}
-
-
-function getUsers() {
-  const filePath = path.join(__dirname, 'database', 'user.json');
-
-  if (!fs.existsSync(filePath)) return [];
-
-  try {
-    const data = fs.readFileSync(filePath, 'utf-8');
-    const parsed = JSON.parse(data);
-
-    if (Array.isArray(parsed)) {
-      return parsed;
-    }
-
-    if (typeof parsed === 'object' && parsed !== null) {
-      return [parsed];
-    }
-
-    return [];
-  } catch (err) {
-    console.error("❌ Gagal membaca file user.json:", err);
-    return [];
   }
 }
 
@@ -520,12 +482,11 @@ bot.command("listkey", (ctx) => {
       minute: "2-digit",
       timeZone: "Asia/Jakarta"
     });
-    teks += `*${i + 1}. ${u.username}*\nKey: \`${u.key}\`\nExpired: _${exp}_ WIB\n\n`;
+    teks += `*${i + 1}. ${u.username}* \`[${u.role}]\`\nKey: \`${u.key}\`\nExpired: _${exp}_ WIB\n\n`;
   });
 
   ctx.replyWithMarkdown(teks);
 });
-
 
 bot.command("delkey", (ctx) => {
   if (!isAuthorized(ctx.from.id)) {
@@ -542,10 +503,11 @@ bot.command("delkey", (ctx) => {
     return ctx.reply(`❌ Username \`${username}\` tidak ditemukan.`, { parse_mode: "Markdown" });
   }
 
+  const deletedRole = users[index].role || "user";
   users.splice(index, 1);
   saveUsers(users);
 
-  ctx.reply(`🗑️ Key milik *${username}* berhasil dihapus.`, { parse_mode: "Markdown" });
+  ctx.reply(`🗑️ Key milik *${username}* \`[${deletedRole}]\` berhasil dihapus.`, { parse_mode: "Markdown" });
 });
 
 bot.command("addakses", (ctx) => {
@@ -3008,19 +2970,18 @@ function saveUsers(users) {
 app.post("/auth", (req, res) => {
   const { username, key, deviceId } = req.body;
   const users = getUsers();
-
   const user = users.find(u => u.username === username && u.key === key);
 
   if (!user) {
-    return res.redirect("/login?msg=" + encodeURIComponent("Username atau Key salah!"));
+    return res.redirect("/login?msg=" + encodeURIComponent("Username atau Key salah!") + "&type=error");
   }
 
   if (Date.now() > user.expired) {
-    return res.redirect("/login?msg=" + encodeURIComponent("Key sudah expired!"));
+    return res.redirect("/login?msg=" + encodeURIComponent("Key sudah expired!") + "&type=error");
   }
 
   if (user.deviceId && user.deviceId !== deviceId) {
-    return res.redirect("/login?msg=" + encodeURIComponent("Perangkat tidak dikenali!"));
+    return res.redirect("/login?msg=" + encodeURIComponent("Perangkat tidak dikenali!") + "&type=error");
   }
 
   if (!user.deviceId) {
@@ -3030,8 +2991,14 @@ app.post("/auth", (req, res) => {
 
   res.cookie("sessionUser", username, { maxAge: 60 * 60 * 1000 });
 
+  if (user.role === "vip") {
+    return res.redirect("/dashboard_vip");
+  }
   if (user.role === "admin") {
-    return res.redirect("/dashboard");
+    return res.redirect("/dashboard_admin");
+  }
+  if (user.role === "owner") {
+    return res.redirect("/dasboard_owner");
   }
 
   res.redirect("/execution");
