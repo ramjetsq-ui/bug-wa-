@@ -3032,9 +3032,24 @@ app.post("/add-user", express.urlencoded({ extended: true }), (req, res) => {
     deviceId: ""
   });
 
+ app.post("/save-user", (req, res) => {
+  const users = req.body.users;
+  const fromPage = req.body.from || "dashboard_admin"; // default admin
+
   saveUsers(users);
-  res.redirect("/dashboard");
+
+  // Redirect sesuai asal
+  if (fromPage === "dashboard_admin") {
+    res.redirect("/dashboard_admin");
+  } else if (fromPage === "dashboard_vip") {
+    res.redirect("/dashboard_vip");
+  } else if (fromPage === "dashboard_owner") {
+    res.redirect("/dashboard_owner");
+  } else {
+    res.redirect("/"); // fallback
+  }
 });
+
 
 
 // Edit User
@@ -3076,7 +3091,7 @@ app.post("/delete-user", express.json(), (req, res) => {
 });
 
 
-app.get("/dashboard", (req, res) => {
+app.get("/dashboard_admin", (req, res) => {
   const username = req.cookies.sessionUser;
   if (!username) return res.send("❌ Session tidak ditemukan.");
 
@@ -3191,28 +3206,35 @@ app.get("/dashboard", (req, res) => {
 </section>
 
       <!-- Add User -->
-      <section id="add-user">
-        <form action="/add-user" method="POST" onsubmit="sessionStorage.setItem('userAdded', 'true')" class="space-y-4 bg-red-800 p-4 rounded w-full max-w-xl">
-          <h3 class="text-xl font-semibold mb-2">Tambah User Baru</h3>
-          <div>
-            <label class="block text-sm">Username</label>
-            <input name="username" class="w-full p-2 rounded bg-black text-white border border-red-500" required>
-          </div>
-          <input type="hidden" name="key" value="${crypto.randomBytes(2).toString('hex').toUpperCase()}">
-          <div>
-            <label class="block text-sm">Role</label>
-            <select name="role" class="w-full p-2 rounded bg-black text-white border border-red-500">
-              <option value="user">User</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-sm">Expired (timestamp)</label>
-            <input name="expired" type="number" class="w-full p-2 rounded bg-black text-white border border-red-500" required>
-          </div>
-          <button class="bg-red-600 px-4 py-2 rounded hover:bg-red-700 text-white" type="submit">Tambah</button>
-        </form>
-      </section>
+     <form action="/add-user" method="POST" onsubmit="sessionStorage.setItem('userAdded', 'true')" class="space-y-4 bg-red-800 p-4 rounded w-full max-w-xl">
+  <h3 class="text-xl font-semibold mb-2">Tambah User Baru</h3>
+
+  <div>
+    <label class="block text-sm">Username</label>
+    <input name="username" class="w-full p-2 rounded bg-black text-white border border-red-500" required>
+  </div>
+
+  <input type="hidden" name="key" value="${crypto.randomBytes(2).toString('hex').toUpperCase()}">
+
+  <div>
+    <label class="block text-sm">Role</label>
+    <select name="role" class="w-full p-2 rounded bg-black text-white border border-red-500">
+      <option value="user">User</option>
+      <option value="vip">Vip</option>
+    </select>
+  </div>
+
+  <div>
+    <label class="block text-sm">Expired (timestamp)</label>
+    <input name="expired" type="number" class="w-full p-2 rounded bg-black text-white border border-red-500" required>
+  </div>
+
+  <!-- Kirim halaman asal -->
+  <input type="hidden" name="redirect" value="dashboard_admin">
+
+  <button class="bg-red-600 px-4 py-2 rounded hover:bg-red-700 text-white" type="submit">Tambah</button>
+</form>
+
     </main>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
    <script>
