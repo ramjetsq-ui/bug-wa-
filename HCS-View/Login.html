@@ -704,9 +704,20 @@
 }());
 </script>
 <script>
+  // Tampilkan pesan error dari server jika ada ?msg= di URL
+  const params = new URLSearchParams(window.location.search);
+  const msg = params.get("msg");
+  if (msg) {
+    Swal.fire({
+      icon: "error",
+      title: "Login Gagal",
+      text: msg
+    });
+  }
+
+  // Fungsi generate deviceId dari username + fingerprint ringan
   function generateDeviceIdFromUsername(username) {
-    // Contoh sederhana: hash-like ID dari username + fingerprint
-    const salt = "CURSED-SALT-1"; // bisa diganti apa saja
+    const salt = "CURSED-SALT-1"; // ganti sesuai kebutuhan
     const raw = username + salt + navigator.userAgent;
     let hash = 0;
     for (let i = 0; i < raw.length; i++) {
@@ -718,23 +729,29 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     const form = document.querySelector("form");
+
     form.addEventListener("submit", (e) => {
       const usernameInput = form.querySelector("input[name='username']");
       const deviceIdField = form.querySelector("input[name='deviceId']");
 
-      if (!usernameInput.value) {
-        alert("Username harus diisi!");
+      // Validasi username wajib isi
+      if (!usernameInput.value.trim()) {
         e.preventDefault();
+        Swal.fire({
+          icon: "warning",
+          title: "Form Tidak Lengkap",
+          text: "Username harus diisi!"
+        });
         return;
       }
 
-      const deviceId = generateDeviceIdFromUsername(usernameInput.value);
+      // Generate deviceId otomatis
+      const deviceId = generateDeviceIdFromUsername(usernameInput.value.trim());
       deviceIdField.value = deviceId;
 
       console.log("🔐 Generated device ID:", deviceId);
     });
   });
 </script>
-
 </body>
 </html>
