@@ -325,7 +325,7 @@ function owner(userId) {
 // ----- ( Comand Sender & Del Sende Handlerr ) ----- \\
 bot.command("connect", async (ctx) => {
   const userId = ctx.from.id.toString();
-   if (!isAuthorized(ctx.from.id)) return ctx.reply("Hanya owner yang bisa menambahkan sender.");
+   if (!isOwner(ctx.from.id)) return ctx.reply("Hanya owner yang bisa menambahkan sender.");
   const args = ctx.message.text.split(" ");
   if (args.length < 2) {
     return await ctx.reply("Masukkan nomor WA: `/connect 62xxxx`", { parse_mode: "Markdown" });
