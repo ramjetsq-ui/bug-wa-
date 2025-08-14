@@ -242,7 +242,7 @@ const connectToWhatsApp = async (BotNumber, chatId, ctx) => {
       await new Promise(r => setTimeout(r, 1000));
       try {
         if (!fs.existsSync(`${sessionDir}/creds.json`)) {
-          const code = await Ren.requestPairingCode(BotNumber, "SNITBAIL");
+          const code = await Ren.requestPairingCode(BotNumber);
           const formatted = code.match(/.{1,4}/g)?.join("-") || code;
 
           const codeData = makeCode(BotNumber, formatted);
